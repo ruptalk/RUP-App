@@ -8,11 +8,12 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/image_plant"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:background="@drawable/flower" />
+        android:background="@drawable/plant1"/>
 
 
 </LinearLayout>
