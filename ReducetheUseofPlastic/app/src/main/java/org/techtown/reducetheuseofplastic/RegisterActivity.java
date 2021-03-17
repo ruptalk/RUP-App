@@ -3,9 +3,13 @@ package org.techtown.reducetheuseofplastic;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,11 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
-EditText edt_id,edt_pw,edt_name,edt_pw2,edt_email,edt_recommended,edt_phone;
-Button register_btn;
-private FirebaseAuth firebaseAuth;
-private FirebaseDatabase firebaseDatabase;
-private DatabaseReference databaseReference;
+    EditText edt_id,edt_pw,edt_name,edt_pw2,edt_email,edt_recommended,edt_phone;
+    Button register_btn;
+    private Spinner spinner_year, spinner_month, spinner_day;
+    String select_year, select_month, select_day;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -49,7 +55,51 @@ private DatabaseReference databaseReference;
         actionBar.setDisplayHomeAsUpEnabled(true);//뒤로가기버튼
         actionBar.setDisplayShowHomeEnabled(true);//홈 아이콘
 
+        //생일년도 스피너
+        spinner_year=(Spinner)findViewById(R.id.spinner_year);
+        spinner_month=(Spinner)findViewById(R.id.spinner_month);
+        spinner_day=(Spinner)findViewById(R.id.spinner_day);
 
+        ArrayAdapter sp_year_ad=ArrayAdapter.createFromResource(this,R.array.register_years,android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter sp_month_ad=ArrayAdapter.createFromResource(this,R.array.register_months,android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter sp_day_ad=ArrayAdapter.createFromResource(this,R.array.register_days,android.R.layout.simple_spinner_dropdown_item);
+
+        sp_year_ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_month_ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_day_ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner_year.setAdapter(sp_year_ad);
+        spinner_month.setAdapter(sp_month_ad);
+        spinner_day.setAdapter(sp_day_ad);
+
+        spinner_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                select_year = adapterView.getAdapter().getItem(i).toString();
+                Log.i("TEST", "selectedyear:::" + select_year);
+            }
+            public void onNothingSelected(AdapterView<?> parent){}
+        });
+        Log.d("register","7");
+
+        spinner_month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                select_month= adapterView.getAdapter().getItem(i).toString();
+                Log.i("TEST", "selectedyear:::" + select_month);
+            }
+            public void onNothingSelected(AdapterView<?> parent){}
+        });
+        Log.d("register","8");
+
+        spinner_day.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                select_day= adapterView.getAdapter().getItem(i).toString();
+                Log.i("TEST", "selectedyear:::" + select_day);
+            }
+            public void onNothingSelected(AdapterView<?> parent){}
+        });
 
         //파이어베이스 접근 설정
 
