@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btn_home, btn_rank, btn_mypage; //프레그먼트 전환 버튼
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     MainFragment fragment_main;
     RankFragment fragment_rank;
     MyPageFragment fragment_mypage;
+
+    private DatabaseReference databaseReference;
+
 
 
     @Override
@@ -48,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         btn_home=(Button)findViewById(R.id.btn_home);
         btn_rank=(Button)findViewById(R.id.btn_rank);
         btn_mypage=(Button)findViewById(R.id.btn_mypage);
+
+        databaseReference= FirebaseDatabase.getInstance().getReference();
 
         btn_home.setOnClickListener(new View.OnClickListener(){
             @Override

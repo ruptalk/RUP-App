@@ -158,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 hashMap.put("recommended",recommended);
                                 hashMap.put("phone",phone);
                                 hashMap.put("point","0");
-                                databaseReference.child(id).setValue(hashMap);
+                                databaseReference.child("users").child(id).setValue(hashMap);
                                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                                 finish();
                                 Toast.makeText(getApplicationContext(),"회원가입에 성공하셨습니다.",Toast.LENGTH_SHORT).show();
