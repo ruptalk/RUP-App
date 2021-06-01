@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
+
+    <Button
+        android:id="@+id/btn_mypage_cancle"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_baseline_keyboard_backspace_24"
+        android:backgroundTint="#575656"/>
+
+    <Button
+        android:id="@+id/btn_modify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_mypage_cancle"
+        android:text="개인 정보 수정"
+        android:backgroundTint="#575656" />
+
+    <Button
+        android:id="@+id/btn_point_return"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_modify"
+        android:text="포인트 반환하기"
+        android:backgroundTint="#575656"/>
+
+    <Button
+        android:id="@+id/btn_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_point_return"
+        android:text="공지사항"
+        android:backgroundTint="#575656"/>
+
+    <Button
+        android:id="@+id/btn_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_notice"
+        android:text="고객센터"
+        android:backgroundTint="#575656"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_service"
+        android:text="로그아웃"
+        android:backgroundTint="#575656"/>
+
+</RelativeLayout>
