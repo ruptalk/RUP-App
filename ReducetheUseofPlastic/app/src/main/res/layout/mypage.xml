@@ -7,12 +7,23 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".MyPageFragment">
+    tools:context=".MyPageActivity">
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_baseline_keyboard_backspace_24"/>
 
     <TextView
         android:id="@+id/mypage_idtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_back"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -34,6 +45,7 @@
         android:id="@+id/btn_setting"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
@@ -102,8 +114,8 @@
 
     <ImageView
         android:id="@+id/img_qrcode"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_below="@id/img_user"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"

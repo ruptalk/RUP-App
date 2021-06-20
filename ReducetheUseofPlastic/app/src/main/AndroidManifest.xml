@@ -12,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReducetheUseofPlastic">
+        <activity android:name=".AlarmFragment"></activity>
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/styles" />
@@ -23,10 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MyPageActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Register2" />
     </application>
 
 </manifest>

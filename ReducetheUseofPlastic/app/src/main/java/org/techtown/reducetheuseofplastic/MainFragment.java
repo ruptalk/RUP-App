@@ -2,6 +2,7 @@ package org.techtown.reducetheuseofplastic;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class MainFragment extends Fragment {
     Button btn_test;
     TextView tv_cuppoint;
     int cuppoint=0;
-    private ImageButton btn_point_alarm;
+    private ImageButton btn_point_alarm, btn_mypage;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,14 +59,23 @@ public class MainFragment extends Fragment {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.main_fragment, container, false);
 
         btn_test=(Button)rootView.findViewById(R.id.btn_test);
+        btn_mypage=(ImageButton)rootView.findViewById((R.id.btn_mypage));
+        btn_point_alarm=(ImageButton)rootView.findViewById(R.id.btn_alarm);
         tv_cuppoint=(TextView)rootView.findViewById(R.id.tv_cuppoint);
 
         context=container.getContext();
-        btn_point_alarm=(ImageButton)rootView.findViewById(R.id.Imgbtn_alram);
+
+        btn_mypage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), MyPageActivity.class);
+                startActivity(intent);
+            }
+        });
+/*
         btn_point_alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Log.d("toast","1");
                 LayoutInflater layoutInflater=getLayoutInflater();
                 View view_l=inflater.inflate(R.layout.point_save, (ViewGroup)getView().findViewById(R.id.toast_layout));
@@ -81,10 +91,10 @@ public class MainFragment extends Fragment {
                 toast.setDuration(Toast.LENGTH_SHORT);
                 toast.setView(view_l);
                 toast.show();
-
-
             }
         });
+
+ */
 
         LottieAnimationView animationView=(LottieAnimationView) rootView.findViewById(R.id.like_btn);
         btn_test.setOnClickListener(new View.OnClickListener() {
