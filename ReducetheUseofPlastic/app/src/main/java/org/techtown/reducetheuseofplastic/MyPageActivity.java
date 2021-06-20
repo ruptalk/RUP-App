@@ -28,7 +28,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     private ImageView img_qr;
     private String userEmail;
-    MainActivity mainActivity;
+
     private TextView tv_id, tv_lv, tv_point;
     private Button btn_setting, btn_back;
 
@@ -43,6 +43,7 @@ public class MyPageActivity extends AppCompatActivity {
         tv_point=(TextView)findViewById(R.id.tv_mypage_point);
         btn_setting=(Button)findViewById(R.id.btn_setting);
         btn_back=(Button)findViewById(R.id.btn_back);
+
 
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +61,7 @@ public class MyPageActivity extends AppCompatActivity {
                 finish();
             }
         });
-        
+
 /*
         if(getArguments()!=null){
             userEmail=getArguments().getString("userEmail");

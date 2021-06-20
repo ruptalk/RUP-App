@@ -16,18 +16,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    ImageButton btn_home, btn_rank, btn_alarm;
+    private ImageButton btn_home, btn_rank, btn_alarm;
     public String userEmail;
-
-
-    private long lastTimeBackPressed;
     MainFragment fragment_main;
     RankFragment fragment_rank;
-    MyPageActivity fragment_mypage;
 
     private DatabaseReference databaseReference;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         btn_alarm.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //yCustomDialogFragment myCustomDialogFragment=new MyCustomDialogFragment();
 
             }
         });

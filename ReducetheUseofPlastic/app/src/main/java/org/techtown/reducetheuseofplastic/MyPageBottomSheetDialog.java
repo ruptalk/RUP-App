@@ -19,6 +19,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
     public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
     private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
+    MyCustomDialogFragment myCustomDialogFragment;
     //private Dialog dialog1, dialog2, dialog3;
 
     @Nullable
@@ -52,11 +53,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                 break;
             case R.id.btn_notice:
                 Toast.makeText(getContext(),"공지사항",Toast.LENGTH_SHORT).show();
-                Bundle args=new Bundle();
-                args.putString("key","value");
-                FragmentDialog dialog=new FragmentDialog();
-                dialog.setArguments(args); //데이터전달
-                dialog.show(getActivity().getSupportFragmentManager(),"tag");
+
                 break;
             case R.id.btn_service:
                 Toast.makeText(getContext(),"고객센터",Toast.LENGTH_SHORT).show();
