@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".MyPageFragment">
+    tools:context=".MyPageActivity">
 
     <TextView
         android:id="@+id/mypage_idtext"

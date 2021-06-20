@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
+/*
 public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
 
     public static MyPageBottomSheetDialog newInstance() { return new MyPageBottomSheetDialog(); }
@@ -42,7 +42,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
 
         return view;
     }
-
+/*
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -76,4 +76,9 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                 break;
         }
     }
+
+
 }
+
+ */
+

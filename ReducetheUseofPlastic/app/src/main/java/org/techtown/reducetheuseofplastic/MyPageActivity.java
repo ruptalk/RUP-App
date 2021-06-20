@@ -13,6 +13,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,11 +23,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-public class MyPageFragment extends Fragment {
-
-    public static MyPageFragment newInstance(){
-        return new MyPageFragment();
-    }
+public class MyPageActivity extends AppCompatActivity {
 
     private ImageView img_qr;
     private String userEmail;
@@ -35,41 +32,26 @@ public class MyPageFragment extends Fragment {
     private Button btn_setting;
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mainActivity=(MainActivity)getActivity();
-        System.out.println("프래그먼트 홈");
-    }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.mypage);
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mainActivity=null;
-        System.out.println("프래그먼트 홈 떨어졌다");
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.mypage, container, false);
-
-        img_qr=(ImageView)rootView.findViewById(R.id.img_qrcode);
-        tv_id=(TextView)rootView.findViewById(R.id.mypage_id);
-        tv_lv=(TextView)rootView.findViewById(R.id.mypage_rank);
-        tv_point=(TextView)rootView.findViewById(R.id.tv_mypage_point);
-        btn_setting=(Button)rootView.findViewById(R.id.btn_setting);
+        img_qr=(ImageView)findViewById(R.id.img_qrcode);
+        tv_id=(TextView)findViewById(R.id.mypage_id);
+        tv_lv=(TextView)findViewById(R.id.mypage_rank);
+        tv_point=(TextView)findViewById(R.id.tv_mypage_point);
+        btn_setting=(Button)findViewById(R.id.btn_setting);
 
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
-                ((MainActivity)getActivity()).replaceFragment(MyPageBottomSheetDialog.newInstance());
+//                MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
+//                ((MainActivity)getActivity()).replaceFragment(MyPageBottomSheetDialog.newInstance());
             }
         });
-
+/*
         if(getArguments()!=null){
             userEmail=getArguments().getString("userEmail");
             System.out.println(userEmail);
@@ -77,6 +59,8 @@ public class MyPageFragment extends Fragment {
             //tv_lv.setText("Lv.5");//일단 정적으로 고정
 
         }
+
+ */
 
 
         System.out.println("야야야야야양" + userEmail);
@@ -91,7 +75,7 @@ public class MyPageFragment extends Fragment {
 
         }
 
-        return rootView;
-
     }
+
+
 }

@@ -16,14 +16,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    ImageButton btn_home, btn_rank,btn_mypage;
+    ImageButton btn_home, btn_rank, btn_alarm;
     public String userEmail;
 
 
     private long lastTimeBackPressed;
     MainFragment fragment_main;
     RankFragment fragment_rank;
-    MyPageFragment fragment_mypage;
+    MyPageActivity fragment_mypage;
 
     private DatabaseReference databaseReference;
 
@@ -38,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent= getIntent();
         userEmail=intent.getStringExtra("userEmail");
 
-
+        fragment_main=new MainFragment();
+        fragment_rank=new RankFragment();
 
         btn_home=(ImageButton)findViewById(R.id.btn_home);
         btn_rank=(ImageButton)findViewById(R.id.btn_rank);
-        btn_mypage=(ImageButton)findViewById(R.id.btn_mypage);
+        btn_alarm=(ImageButton)findViewById(R.id.btn_alarm);
 
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
@@ -61,28 +62,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_mypage.setOnClickListener(new View.OnClickListener(){
+        btn_alarm.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                MyPageFragment myPageFragment=new MyPageFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("userEmail",userEmail);
-                myPageFragment.setArguments(bundle);
-                setFrag(2);
+
             }
         });
 
 
 
-        fragment_main=new MainFragment();
-        fragment_rank=new RankFragment();
-        fragment_mypage=new MyPageFragment();
         Bundle bundle=new Bundle();
         bundle.putString("userEmail",userEmail);
         fragment_main.setArguments(bundle);
-        fragment_mypage.setArguments(bundle);
+        fragment_rank.setArguments(bundle);
         setFrag(0);
-
 
     }
     public void setFrag(int n){
@@ -92,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_rank).commit();
-                break;
-            case 2:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_mypage).commit();
                 break;
         }
     }
