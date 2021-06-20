@@ -1,11 +1,16 @@
 package org.techtown.reducetheuseofplastic;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,8 +24,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
     public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
     private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
-    MyCustomDialogFragment myCustomDialogFragment;
-    //private Dialog dialog1, dialog2, dialog3;
+    int res=1;
 
     @Nullable
     @Override
@@ -47,6 +51,33 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
         switch(view.getId()){
             case R.id.btn_modify:
                 Toast.makeText(getContext(),"개인정보수정", Toast.LENGTH_SHORT).show();
+                final EditText editText=new EditText(getActivity());
+                editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
+                dialog.setTitle("비밀번호를 입력하세요.");
+                dialog.setView(editText);
+                dialog.setPositiveButton("입력", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String password=editText.getText().toString();
+                        /*
+                        여기에 파이어베이스에서 비밀번호 맞는지 확인
+                         */
+                        //비번 맞으면
+                        res=0;
+                        //비번 틀리면
+                        res=1;
+                        if(res==1){
+                            Intent intent=new Intent(getActivity(), UserInformationActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(getContext(),"비밀번호가 맞지 않습니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show();
+                            dismiss();
+                        }
+                    }
+                }).setNegativeButton("취소",null).show();
                 break;
             case R.id.btn_point_return:
                 Toast.makeText(getContext(),"포인트 반환하기",Toast.LENGTH_SHORT).show();

@@ -5,4 +5,7 @@
         <item name="android:windowEnterAnimation">@xml/open</item>
         <item name="android:windowExitAnimation">@xml/close</item>
     </style>
+
+
+
 </resources>
