@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -19,11 +23,16 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class MyPageFragment extends Fragment {
-    private ImageView iv_qr;
+
+    public static MyPageFragment newInstance(){
+        return new MyPageFragment();
+    }
+
+    private ImageView img_qr;
     private String userEmail;
     MainActivity mainActivity;
-    private TextView textViewId,textViewPoint;
-    private TextView textViewLv;
+    private TextView tv_id, tv_lv, tv_point;
+    private Button btn_setting;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,16 +54,27 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.mypage, container, false);
 
+        img_qr=(ImageView)rootView.findViewById(R.id.img_qrcode);
+        tv_id=(TextView)rootView.findViewById(R.id.mypage_id);
+        tv_lv=(TextView)rootView.findViewById(R.id.mypage_rank);
+        tv_point=(TextView)rootView.findViewById(R.id.tv_mypage_point);
+        btn_setting=(Button)rootView.findViewById(R.id.btn_setting);
 
-        iv_qr=(ImageView)rootView.findViewById(R.id.imageview_qrcode);
-        textViewId=(TextView)rootView.findViewById(R.id.mypage_id);
-        textViewLv=(TextView)rootView.findViewById(R.id.mypage_rank);
-        textViewPoint=(TextView)rootView.findViewById(R.id.mypage_point);
+
+        btn_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
+                ((MainActivity)getActivity()).replaceFragment(MyPageBottomSheetDialog.newInstance());
+            }
+        });
+
         if(getArguments()!=null){
             userEmail=getArguments().getString("userEmail");
             System.out.println(userEmail);
-            textViewId.setText(userEmail);
-            textViewLv.setText("Lv.5");//일단 정적으로 고정
+            tv_id.setText(userEmail);
+            //tv_lv.setText("Lv.5");//일단 정적으로 고정
 
         }
 
@@ -66,10 +86,11 @@ public class MyPageFragment extends Fragment {
             BitMatrix bitMatrix=multiFormatWriter.encode(userEmail, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder=new BarcodeEncoder();
             Bitmap bitmap=barcodeEncoder.createBitmap(bitMatrix);
-            iv_qr.setImageBitmap(bitmap);
+            img_qr.setImageBitmap(bitmap);
         }catch (Exception e){
 
         }
+
         return rootView;
 
     }
