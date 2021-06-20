@@ -1,29 +1,31 @@
 package org.techtown.reducetheuseofplastic;
 
 public class UserIdPoint {
-    private int picture;
     private String UserId;
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
+    public int getUserPoint() {
+        return UserPoint;
+    }
+
+    public void setUserPoint(int userPoint) {
+        UserPoint = userPoint;
+    }
+
     private int UserPoint;
     public UserIdPoint(int picture,String UserId,int UserPoint){
         this.UserId=UserId;
         this.UserPoint=UserPoint;
     }
-    public int getPicture(){
-        return getPicture();
+    public UserIdPoint(){
+
     }
-    public int getUserPoint(){
-        return getUserPoint();
-    }
-    public String getUserId(){
-        return getUserId();
-    }
-    public void setPicture(int picture){
-        this.picture=picture;
-    }
-    public void setUserId(String UserId){
-        this.UserId=UserId;
-    }
-    public void setUserPoint(int UserPoint){
-        this.UserPoint=UserPoint;
-    }
+
 }

@@ -44,12 +44,10 @@ public class RankFragmentAdapter extends BaseAdapter {
         if(view==null){
             view=layoutInflater.inflate(layout,viewGroup,false);
         }
-        ImageView imageView=(ImageView)view.findViewById(R.id.imageView1);
         TextView textView1=(TextView)view.findViewById(R.id.textView1);
         TextView textView2=(TextView)view.findViewById(R.id.textView2);
         Button button=(Button)view.findViewById(R.id.button1);
 
-        imageView.setImageResource(data.get(i).getPicture());
         textView1.setText(data.get(i).getUserId());
         textView2.setText(data.get(i).getUserPoint());
         button.setOnClickListener(new View.OnClickListener() {
@@ -60,5 +58,11 @@ public class RankFragmentAdapter extends BaseAdapter {
             }
         });
         return view;
+    }
+    public void addItem(String id,int point){
+        UserIdPoint item=new UserIdPoint();
+        item.setUserId(id);
+        item.setUserPoint(point);
+        data.add(item);
     }
 }
