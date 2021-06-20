@@ -6,17 +6,9 @@
     android:background="#FFFFFF">
 
     <Button
-        android:id="@+id/btn_mypage_cancle"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_baseline_keyboard_backspace_24"
-        android:backgroundTint="#575656"/>
-
-    <Button
         android:id="@+id/btn_modify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_mypage_cancle"
         android:text="개인 정보 수정"
         android:backgroundTint="#575656" />
 

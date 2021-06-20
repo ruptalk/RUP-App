@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -29,7 +30,7 @@ public class MyPageActivity extends AppCompatActivity {
     private String userEmail;
     MainActivity mainActivity;
     private TextView tv_id, tv_lv, tv_point;
-    private Button btn_setting;
+    private Button btn_setting, btn_back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,16 +42,25 @@ public class MyPageActivity extends AppCompatActivity {
         tv_lv=(TextView)findViewById(R.id.mypage_rank);
         tv_point=(TextView)findViewById(R.id.tv_mypage_point);
         btn_setting=(Button)findViewById(R.id.btn_setting);
+        btn_back=(Button)findViewById(R.id.btn_back);
 
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
-//                ((MainActivity)getActivity()).replaceFragment(MyPageBottomSheetDialog.newInstance());
+                MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
+                myPageBottomSheetDialog.show(getSupportFragmentManager(),"bottomSheet");
             }
         });
+
+        btn_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        
 /*
         if(getArguments()!=null){
             userEmail=getArguments().getString("userEmail");

@@ -13,27 +13,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-/*
+
 public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
 
-    public static MyPageBottomSheetDialog newInstance() { return new MyPageBottomSheetDialog(); }
+    public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
-    private Button btn_mypage_cancle, btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
-    private Dialog dialog1, dialog2, dialog3;
+    private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
+    //private Dialog dialog1, dialog2, dialog3;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.mypage_bottomsheet,container, false);
 
-        btn_mypage_cancle=(Button)view.findViewById(R.id.btn_mypage_cancle);
         btn_modify=(Button)view.findViewById(R.id.btn_modify);
         btn_point_return=(Button)view.findViewById(R.id.btn_point_return);
         btn_notice=(Button)view.findViewById(R.id.btn_notice);
         btn_service=(Button)view.findViewById(R.id.btn_service);
         btn_logout=(Button)view.findViewById(R.id.btn_logout);
 
-        btn_mypage_cancle.setOnClickListener(this);
         btn_modify.setOnClickListener(this);
         btn_point_return.setOnClickListener(this);
         btn_notice.setOnClickListener(this);
@@ -42,18 +40,10 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
 
         return view;
     }
-/*
+
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.btn_mypage_cancle:
-                MyPageFragment myPageFragment=new MyPageFragment();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, myPageFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                break;
-
             case R.id.btn_modify:
                 Toast.makeText(getContext(),"개인정보수정", Toast.LENGTH_SHORT).show();
                 break;
@@ -78,7 +68,9 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
     }
 
 
+
+
 }
 
- */
+
 
