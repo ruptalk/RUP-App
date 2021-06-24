@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity2"
+    android:gravity="center">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"/>
+    <EditText
+        android:id="@+id/edt_name2"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:hint="닉네임"/>
+    <EditText
+        android:id="@+id/edt_email2"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:hint="이메일"/>
+    <EditText
+        android:id="@+id/edt_pw2"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:hint="비밀번호"/>
+    <EditText
+        android:id="@+id/edt_rpw2"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:hint="비밀번호 확인"/>
+    <Button
+        android:id="@+id/btn_reg2"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="회원가입"/>
+
+
+</LinearLayout>
