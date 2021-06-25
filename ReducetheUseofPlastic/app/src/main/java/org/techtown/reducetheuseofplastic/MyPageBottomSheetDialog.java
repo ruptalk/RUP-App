@@ -18,13 +18,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
 
     public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
+    private FirebaseDatabase database=FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
+
     private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
-    int res=1;
 
     @Nullable
     @Override
@@ -43,6 +50,8 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
         btn_service.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
+        databaseReference=database.getReference();
+
         return view;
     }
 
@@ -52,7 +61,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
             case R.id.btn_modify:
                 Toast.makeText(getContext(),"개인정보수정", Toast.LENGTH_SHORT).show();
                 final EditText editText=new EditText(getActivity());
-                editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                editText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
                 AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
                 dialog.setTitle("비밀번호를 입력하세요.");
@@ -61,21 +70,31 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String password=editText.getText().toString();
-                        /*
-                        여기에 파이어베이스에서 비밀번호 맞는지 확인
-                         */
-                        //비번 맞으면
-                        res=0;
-                        //비번 틀리면
-                        res=1;
-                        if(res==1){
-                            Intent intent=new Intent(getActivity(), UserInformationActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(getContext(),"비밀번호가 맞지 않습니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show();
-                            dismiss();
-                        }
+                        System.out.println("edit_pw: "+password);
+
+                        databaseReference.child("yunjeong9999").child("pw").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String value=dataSnapshot.getValue(String.class);
+                                System.out.println("pw: "+value);
+
+                                if(password.equals(value)) {
+                                    Intent intent=new Intent(getActivity(), UserInformationActivity.class);
+                                    startActivity(intent);
+
+                                }
+                                else {
+                                    Toast.makeText(getContext(),"비밀번호가 맞지 않습니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show();
+                                    dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
                     }
                 }).setNegativeButton("취소",null).show();
                 break;
