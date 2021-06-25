@@ -1,11 +1,16 @@
 package org.techtown.reducetheuseofplastic;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,14 +18,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
 
     public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
+    private FirebaseDatabase database=FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
+
     private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
-    MyCustomDialogFragment myCustomDialogFragment;
-    //private Dialog dialog1, dialog2, dialog3;
 
     @Nullable
     @Override
@@ -39,6 +50,8 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
         btn_service.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
+        databaseReference=database.getReference();
+
         return view;
     }
 
@@ -47,6 +60,43 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
         switch(view.getId()){
             case R.id.btn_modify:
                 Toast.makeText(getContext(),"개인정보수정", Toast.LENGTH_SHORT).show();
+                final EditText editText=new EditText(getActivity());
+                editText.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
+                dialog.setTitle("비밀번호를 입력하세요.");
+                dialog.setView(editText);
+                dialog.setPositiveButton("입력", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String password=editText.getText().toString();
+                        System.out.println("edit_pw: "+password);
+
+                        databaseReference.child("yunjeong9999").child("pw").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String value=dataSnapshot.getValue(String.class);
+                                System.out.println("pw: "+value);
+
+                                if(password.equals(value)) {
+                                    Intent intent=new Intent(getActivity(), UserInformationActivity.class);
+                                    startActivity(intent);
+
+                                }
+                                else {
+                                    Toast.makeText(getContext(),"비밀번호가 맞지 않습니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show();
+                                    dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                }).setNegativeButton("취소",null).show();
                 break;
             case R.id.btn_point_return:
                 Toast.makeText(getContext(),"포인트 반환하기",Toast.LENGTH_SHORT).show();

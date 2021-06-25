@@ -19,6 +19,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -27,10 +32,12 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class MyPageActivity extends AppCompatActivity {
 
     private ImageView img_qr;
-    private String userEmail;
-
+    private String nickname ,userEmail, email;
+    private int point;
     private TextView tv_id, tv_lv, tv_point;
     private Button btn_setting, btn_back;
+    private FirebaseDatabase database=FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,12 +46,11 @@ public class MyPageActivity extends AppCompatActivity {
 
         img_qr=(ImageView)findViewById(R.id.img_qrcode);
         tv_id=(TextView)findViewById(R.id.mypage_id);
-        tv_lv=(TextView)findViewById(R.id.mypage_rank);
+        tv_lv=(TextView)findViewById(R.id.tv_mypage_rank);
         tv_point=(TextView)findViewById(R.id.tv_mypage_point);
         btn_setting=(Button)findViewById(R.id.btn_setting);
         btn_back=(Button)findViewById(R.id.btn_back);
-
-
+        databaseReference=database.getReference();
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,20 +68,7 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
 
-/*
-        if(getArguments()!=null){
-            userEmail=getArguments().getString("userEmail");
-            System.out.println(userEmail);
-            tv_id.setText(userEmail);
-            //tv_lv.setText("Lv.5");//일단 정적으로 고정
-
-        }
-
- */
-
-
-        System.out.println("야야야야야양" + userEmail);
-
+        //qr코드
         MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
         try{
             BitMatrix bitMatrix=multiFormatWriter.encode(userEmail, BarcodeFormat.QR_CODE,200,200);
@@ -86,7 +79,34 @@ public class MyPageActivity extends AppCompatActivity {
 
         }
 
+        databaseReference.child("yunjeong9999").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserInfoList userInfoList=dataSnapshot.getValue(UserInfoList.class);
+                nickname=userInfoList.getName();
+                email=userInfoList.getEmail();
+                point=Integer.parseInt(userInfoList.getPoint());
+
+                tv_id.setText(nickname);
+                tv_point.setText(""+point);
+                tv_lv.setText("Lv." +check_level(point));
+                System.out.println("nickname: "+nickname);
+                System.out.println("email: "+email);
+                System.out.println("point: "+point+"p");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
+    public String check_level(int point){
+        if(point<=100) return "1";
+        else if(point>100 && point<=200) return "2";
+        else if(point >200 && point<=300) return "3";
+        else return "4";
+    }
 
 }
