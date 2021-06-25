@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".UserInformationActivity"></activity>
-        <activity android:name=".AlarmFragment" />
+
 
         <meta-data
             android:name="com.google.android.actions"
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyPageActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterActivity2" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
     </application>
