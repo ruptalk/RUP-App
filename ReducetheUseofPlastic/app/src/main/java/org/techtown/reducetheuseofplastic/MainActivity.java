@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public String userEmail;
     MainFragment fragment_main;
     RankFragment fragment_rank;
+    AlarmFragment fragment_alarm;
 
     private DatabaseReference databaseReference;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragment_main=new MainFragment();
         fragment_rank=new RankFragment();
+        fragment_alarm=new AlarmFragment();
 
         btn_home=(ImageButton)findViewById(R.id.btn_home);
         btn_rank=(ImageButton)findViewById(R.id.btn_rank);
@@ -58,10 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_alarm.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                //yCustomDialogFragment myCustomDialogFragment=new MyCustomDialogFragment();
-
-            }
+            public void onClick(View v) { setFrag(2); }
         });
 
 
@@ -81,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_rank).commit();
                 break;
+            case 2:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_alarm).commit();
+                break;
+
         }
     }
 
