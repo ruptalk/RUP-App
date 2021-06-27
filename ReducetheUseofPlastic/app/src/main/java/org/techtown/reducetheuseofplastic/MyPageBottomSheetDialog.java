@@ -72,7 +72,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                         String password=editText.getText().toString();
                         System.out.println("edit_pw: "+password);
 
-                        databaseReference.child("yunjeong9999").child("pw").addValueEventListener(new ValueEventListener() {
+                        databaseReference.child("Users").child("yunjeong").child("pw").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 String value=dataSnapshot.getValue(String.class);

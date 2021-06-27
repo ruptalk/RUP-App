@@ -1,24 +1,16 @@
 package org.techtown.reducetheuseofplastic;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,17 +71,18 @@ public class MyPageActivity extends AppCompatActivity {
 
         }
 
-        databaseReference.child("yunjeong9999").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Users").child("yunjeong").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserInfoList userInfoList=dataSnapshot.getValue(UserInfoList.class);
-                nickname=userInfoList.getName();
-                email=userInfoList.getEmail();
-                point=Integer.parseInt(userInfoList.getPoint());
+                UserInfo userInfo=dataSnapshot.getValue(UserInfo.class);
+                nickname=userInfo.getName();
+                email=userInfo.getEmail();
+                point=userInfo.getPoint();
 
-                tv_id.setText(nickname);
-                tv_point.setText(""+point);
-                tv_lv.setText("Lv." +check_level(point));
+
+               tv_id.setText(nickname);
+               tv_point.setText(""+point);
+               tv_lv.setText("Lv." +check_level(point));
                 System.out.println("nickname: "+nickname);
                 System.out.println("email: "+email);
                 System.out.println("point: "+point+"p");

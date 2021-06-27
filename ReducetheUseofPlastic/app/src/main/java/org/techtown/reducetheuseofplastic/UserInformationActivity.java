@@ -3,10 +3,8 @@ package org.techtown.reducetheuseofplastic;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -67,18 +65,13 @@ public class UserInformationActivity extends AppCompatActivity {
 
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
-            databaseReference.child("yunjeong9999").addValueEventListener(new ValueEventListener() {
+            databaseReference.child("Users").child("yunjeong").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserInfoList userInfoList=dataSnapshot.getValue(UserInfoList.class);
-                    nickname=userInfoList.getName();
-                    phone=userInfoList.getPhone();
+                    UserInfo userInfo=dataSnapshot.getValue(UserInfo.class);
+                    nickname=userInfo.getName();
 
                     edit_ninkname.setText(nickname);
-                    if(phone==null){
-                        edit_phone.setText("");
-                    }
-                    else edit_phone.setText(phone);
                 }
 
                 @Override
@@ -108,9 +101,9 @@ public class UserInformationActivity extends AppCompatActivity {
 
                 if(!npw.isEmpty() &&!npw.isEmpty()){
                     if(npw.equals(npw2)){
-                        databaseReference.child("yunjeong9999").child("pw").setValue(npw);
-                        databaseReference.child("yunjeong9999").child("name").setValue(nnickname);
-                        databaseReference.child("yunjeong9999").child("phone").setValue(nphone);
+                        databaseReference.child("yunjeong").child("pw").setValue(npw);
+                        databaseReference.child("yunjeong").child("name").setValue(nnickname);
+                        databaseReference.child("yunjeong").child("phone").setValue(nphone);
                         Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -120,8 +113,8 @@ public class UserInformationActivity extends AppCompatActivity {
                     }
                 }
                 else{
-                    databaseReference.child("yunjeong9999").child("name").setValue(nnickname);
-                    databaseReference.child("yunjeong9999").child("phone").setValue(nphone);
+                    databaseReference.child("yunjeong").child("name").setValue(nnickname);
+                    databaseReference.child("yunjeong").child("phone").setValue(nphone);
                     Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                     finish();
                 }
