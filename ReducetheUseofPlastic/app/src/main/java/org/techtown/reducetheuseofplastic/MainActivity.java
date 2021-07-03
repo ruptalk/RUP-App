@@ -6,18 +6,27 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn_home, btn_rank, btn_alarm;
-    public String userEmail;
+    public String email,name,pw,userEmail;
+    public int point,account;
     MainFragment fragment_main;
     RankFragment fragment_rank;
     AlarmFragment fragment_alarm;
@@ -31,7 +40,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
 
         Intent intent= getIntent();
-        userEmail=intent.getStringExtra("userEmail");
+        String uid=intent.getStringExtra("userUid");
+        System.out.println("MainActivity화면이다~");
+        System.out.println(uid);
+
+
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference reference=database.getReference();
+        reference.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //UserInfo userInfo=snapshot.getValue(UserInfo.class);
+                //System.out.println("-----------------------------------------");
+                //System.out.println(userInfo);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //System.out.println("userInfo"+email);
 
         fragment_main=new MainFragment();
         fragment_rank=new RankFragment();

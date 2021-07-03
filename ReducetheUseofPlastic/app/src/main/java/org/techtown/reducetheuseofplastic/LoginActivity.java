@@ -2,6 +2,7 @@ package org.techtown.reducetheuseofplastic;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,10 +17,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private EditText edt_id,edt_pw;
     private Button btn_login,btn_reg;
@@ -38,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_login=findViewById(R.id.btn_login);
         btn_reg=findViewById(R.id.btn_reg);
 
+
+
         /*
         if(firebaseAuth.getCurrentUser()!=null){
             //이미 로그인이 되어 있다면 액티비티를 종료 하고 main액티비티를 연다.
@@ -49,15 +57,19 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id=edt_id.getText().toString();
-                String pw=edt_pw.getText().toString();
+                String id=edt_id.getText().toString().trim();
+                String pw=edt_pw.getText().toString().trim();
                 firebaseAuth.signInWithEmailAndPassword(id,pw).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            firebaseAuth=FirebaseAuth.getInstance();
+                            FirebaseUser user=firebaseAuth.getCurrentUser();
+                            String uid=user.getUid();
                             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                            intent.putExtra("userEmail",id);
+                            intent.putExtra("userUid",uid);
                             startActivity(intent);
+
                         }else{
                             Toast.makeText(LoginActivity.this,"로그인 오류",Toast.LENGTH_SHORT).show();
                         }
