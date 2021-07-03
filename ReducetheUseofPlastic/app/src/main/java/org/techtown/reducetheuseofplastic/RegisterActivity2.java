@@ -85,7 +85,8 @@ public class RegisterActivity2 extends AppCompatActivity {
                                 userinfo.setEmail(email);
                                 userinfo.setName(name);
                                 userinfo.setPw(pw);
-                                userinfo.setPoint(0);
+                                userinfo.setPoint("0");
+                                userinfo.setAccount("");
 
                                 /*HashMap<Object,Class> result=new HashMap<>();
                                 result.put("name",name);

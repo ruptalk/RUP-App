@@ -27,7 +27,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     private ImageView img_qr;
     private String uid, username , userEmail;
-    private int point;
+    private String point;
     private TextView tv_id, tv_lv, tv_point;
     private Button btn_setting, btn_back;
     private DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
@@ -89,14 +89,15 @@ public class MyPageActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("errer: "+error);
             }
         });
 
 
     }
 
-    public String check_level(int point){
+    public String check_level(String ppoint){
+        int point=Integer.parseInt(ppoint);
         if(point<=100) return "1";
         else if(point>100 && point<=200) return "2";
         else if(point >200 && point<=300) return "3";

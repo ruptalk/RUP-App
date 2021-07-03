@@ -29,7 +29,7 @@ public class UserInformationActivity extends AppCompatActivity {
     private Spinner spinner_bank;
     private String nname, npw, npw2, naccount;
     private String uid, name;
-    private int account;
+    private String account;
     private DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
     private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
@@ -73,7 +73,7 @@ public class UserInformationActivity extends AppCompatActivity {
                     account=userInfo.getAccount();
 
                     edit_name.setText(name);
-                    if(account!=0) edit_account.setText(account);
+                    edit_account.setText(account);
                 }
 
                 @Override
@@ -113,7 +113,7 @@ public class UserInformationActivity extends AppCompatActivity {
 
                         userInfo.setPw(npw);
                         userInfo.setName(nname);
-                        userInfo.setAccount(Integer.parseInt(naccount));
+                        userInfo.setAccount(naccount);
 
                         Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                         finish();
@@ -127,7 +127,7 @@ public class UserInformationActivity extends AppCompatActivity {
                     rootRef.child("Users2").child(uid).child("name").setValue(nname);
                     rootRef.child("Users2").child(uid).child("account").setValue(naccount);
                     userInfo.setName(nname);
-                    userInfo.setAccount(Integer.parseInt(naccount));
+                    userInfo.setAccount(naccount);
                     Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                     finish();
                 }
