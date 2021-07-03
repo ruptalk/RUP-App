@@ -24,13 +24,14 @@ import com.google.firebase.database.ValueEventListener;
 public class UserInformationActivity extends AppCompatActivity {
 
     private ImageButton img_modify_user;
-    private EditText edit_ninkname, edit_pw, edit_pw2, edit_phone;
+    private EditText edit_name, edit_pw, edit_pw2, edit_account;
     private Button btn_user_modify;
     private Spinner spinner_bank;
-    private String nnickname, npw, npw2, nphone; // naccount;
-    private String nickname, phone;
-    private FirebaseDatabase database=FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference;
+    private String nname, npw, npw2, naccount;
+    private String uid, name;
+    private String account;
+    private DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,12 @@ public class UserInformationActivity extends AppCompatActivity {
 
         img_modify_user=(ImageButton)findViewById(R.id.img_modifiy_user);
         btn_user_modify=(Button)findViewById(R.id.btn_user_modify);
+        edit_name=(EditText) findViewById(R.id.edit_modify_nickname);
+        edit_pw=(EditText)findViewById(R.id.edit_modify_password);
+        edit_pw2=(EditText)findViewById(R.id.edit_modify_password2);
+        edit_account=(EditText)findViewById(R.id.edit_modify_account);
+        uid=user.getUid();
+
         spinner_bank=(Spinner)findViewById(R.id.spinner_bank);
         ArrayAdapter bankAdapter=ArrayAdapter.createFromResource(this, R.array.select_bank, android.R.layout.simple_spinner_dropdown_item);
         bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -56,22 +63,17 @@ public class UserInformationActivity extends AppCompatActivity {
             }
         });
 
-        edit_ninkname=(EditText) findViewById(R.id.edit_modify_nickname);
-        edit_pw=(EditText)findViewById(R.id.edit_modify_password);
-        edit_pw2=(EditText)findViewById(R.id.edit_modify_password2);
-        edit_phone=(EditText)findViewById(R.id.edit_modify_phone);
 
-        databaseReference=database.getReference();
-
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
-            databaseReference.child("Users").child("yunjeong").addValueEventListener(new ValueEventListener() {
+            rootRef.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     UserInfo userInfo=dataSnapshot.getValue(UserInfo.class);
-                    nickname=userInfo.getName();
+                    name=userInfo.getName();
+                    account=userInfo.getAccount();
 
-                    edit_ninkname.setText(nickname);
+                    edit_name.setText(name);
+                    edit_account.setText(account);
                 }
 
                 @Override
@@ -84,6 +86,8 @@ public class UserInformationActivity extends AppCompatActivity {
             System.out.println("왜 user 연결이 안될까나");
         }
 
+
+
         img_modify_user.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -94,27 +98,36 @@ public class UserInformationActivity extends AppCompatActivity {
         btn_user_modify.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                UserInfo userInfo=new UserInfo();
                 npw=edit_pw.getText().toString();
                 npw2=edit_pw2.getText().toString();
-                nnickname=edit_ninkname.getText().toString();
-                nphone=edit_phone.getText().toString();
+                nname=edit_name.getText().toString();
+                naccount=edit_account.getText().toString();
 
                 if(!npw.isEmpty() &&!npw.isEmpty()){
                     if(npw.equals(npw2)){
-                        databaseReference.child("yunjeong").child("pw").setValue(npw);
-                        databaseReference.child("yunjeong").child("name").setValue(nnickname);
-                        databaseReference.child("yunjeong").child("phone").setValue(nphone);
+                        rootRef.child("Users2").child(uid).child("pw").setValue(npw);
+                        rootRef.child("Users2").child(uid).child("name").setValue(nname);
+                        rootRef.child("Users2").child(uid).child("account").setValue(naccount);
+
+
+                        userInfo.setPw(npw);
+                        userInfo.setName(nname);
+                        userInfo.setAccount(naccount);
+
                         Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                         finish();
                     }
                     else{
                         Toast.makeText(UserInformationActivity.this,"비밀번호가 다릅니다. 다시 입력해주세요.",Toast.LENGTH_SHORT).show();
-
                     }
                 }
+
                 else{
-                    databaseReference.child("yunjeong").child("name").setValue(nnickname);
-                    databaseReference.child("yunjeong").child("phone").setValue(nphone);
+                    rootRef.child("Users2").child(uid).child("name").setValue(nname);
+                    rootRef.child("Users2").child(uid).child("account").setValue(naccount);
+                    userInfo.setName(nname);
+                    userInfo.setAccount(naccount);
                     Toast.makeText(UserInformationActivity.this,"정보가 수정되었습니다.",Toast.LENGTH_SHORT).show();
                     finish();
                 }

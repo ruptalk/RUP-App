@@ -3,7 +3,7 @@ package org.techtown.reducetheuseofplastic;
 public class UserInfo {
 
     private String email, name, pw, bank;
-    private int account, point;
+    private String account, point;
 
     public UserInfo() {}
 
@@ -23,12 +23,12 @@ public class UserInfo {
 
     public void setBank(String bank) { this.bank=bank; }
 
-    public int getAccount() { return account; }
+    public String getAccount() { return account; }
 
-    public void setAccount(int account) { this.account=account; }
+    public void setAccount(String account) { this.account=account; }
 
-    public int getPoint() { return point; }
+    public String getPoint() { return point; }
 
-    public void setPoint(int point) { this.point=point; }
+    public void setPoint(String point) { this.point=point; }
 
 }
