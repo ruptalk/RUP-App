@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,12 +26,12 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class MyPageActivity extends AppCompatActivity {
 
     private ImageView img_qr;
-    private String nickname ,userEmail, email;
+    private String uid, username , userEmail;
     private int point;
     private TextView tv_id, tv_lv, tv_point;
     private Button btn_setting, btn_back;
-    private FirebaseDatabase database=FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference;
+    private DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MyPageActivity extends AppCompatActivity {
         tv_point=(TextView)findViewById(R.id.tv_mypage_point);
         btn_setting=(Button)findViewById(R.id.btn_setting);
         btn_back=(Button)findViewById(R.id.btn_back);
-        databaseReference=database.getReference();
+        uid=user.getUid();
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,20 +73,17 @@ public class MyPageActivity extends AppCompatActivity {
 
         }
 
-        databaseReference.child("Users").child("yunjeong").addValueEventListener(new ValueEventListener() {
+        rootRef.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserInfo userInfo=dataSnapshot.getValue(UserInfo.class);
-                nickname=userInfo.getName();
-                email=userInfo.getEmail();
+                username=userInfo.getName();
                 point=userInfo.getPoint();
 
-
-               tv_id.setText(nickname);
-               tv_point.setText(""+point);
-               tv_lv.setText("Lv." +check_level(point));
-                System.out.println("nickname: "+nickname);
-                System.out.println("email: "+email);
+                tv_id.setText(username);
+                tv_point.setText(""+point);
+                tv_lv.setText("Lv." +check_level(point));
+                System.out.println("nickname: "+username);
                 System.out.println("point: "+point+"p");
             }
 
@@ -93,6 +92,8 @@ public class MyPageActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public String check_level(int point){

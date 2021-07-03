@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,10 +30,12 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
 
     public static MyPageBottomSheetDialog getInstance() { return new MyPageBottomSheetDialog(); }
 
-    private FirebaseDatabase database=FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference;
+    private DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
 
     private Button btn_modify, btn_point_return, btn_notice, btn_service, btn_logout;
+    private String uid;
+
 
     @Nullable
     @Override
@@ -50,8 +54,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
         btn_service.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
-        databaseReference=database.getReference();
-
+        uid=user.getUid();
         return view;
     }
 
@@ -72,7 +75,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                         String password=editText.getText().toString();
                         System.out.println("edit_pw: "+password);
 
-                        databaseReference.child("Users").child("yunjeong").child("pw").addValueEventListener(new ValueEventListener() {
+                        rootRef.child("Users2").child(uid).child("pw").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 String value=dataSnapshot.getValue(String.class);
