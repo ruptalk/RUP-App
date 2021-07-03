@@ -80,15 +80,23 @@ public class RegisterActivity2 extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 dialog.dismiss();
                                 FirebaseUser user=firebaseAuth.getCurrentUser();
+                                String uid=user.getUid();
+                                UserInfo userinfo = new UserInfo();
+                                userinfo.setEmail(email);
+                                userinfo.setName(name);
+                                userinfo.setPw(pw);
+                                userinfo.setPoint(0);
 
-                                HashMap<Object,String> result=new HashMap<>();
+                                /*HashMap<Object,Class> result=new HashMap<>();
                                 result.put("name",name);
                                 result.put("email",email);
                                 result.put("pw",pw);
                                 result.put("point","0");
+
+                                 */
                                 FirebaseDatabase database=FirebaseDatabase.getInstance();
-                                DatabaseReference reference=database.getReference("Users");
-                                reference.child(name).setValue(result);
+                                DatabaseReference reference=database.getReference("Users2");
+                                reference.child(uid).setValue(userinfo);
                                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                                 Toast.makeText(getApplicationContext(),"RUP회원이 되셨습니다~",Toast.LENGTH_SHORT).show();
 
