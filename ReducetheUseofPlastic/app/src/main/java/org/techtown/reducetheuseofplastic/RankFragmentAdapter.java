@@ -7,31 +7,33 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RankFragmentAdapter extends BaseAdapter {
-    private Context context;//액티비티 화면을 가져옴
-    private ArrayList<UserIdPoint> data=new ArrayList<UserIdPoint>();
+    private ArrayList<RankItem> listViewList=new ArrayList<RankItem>();
     private LayoutInflater layoutInflater;
     private int layout;
 
-    public RankFragmentAdapter(Context context,int layout,ArrayList<UserIdPoint> data){
-        this.context=context;
-        this.data=data;
-        this.layout=layout;
-        layoutInflater=(LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    public RankFragmentAdapter(){
+
     }
     @Override
     public int getCount() {
-        return data.size();
+        return listViewList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return data.get(i);
+        return listViewList.get(i);
     }
 
     @Override
@@ -41,28 +43,27 @@ public class RankFragmentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        final Context context=viewGroup.getContext();
         if(view==null){
-            view=layoutInflater.inflate(layout,viewGroup,false);
+            LayoutInflater layoutInflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view=layoutInflater.inflate(R.layout.rank_item,viewGroup,false);
         }
-        TextView textView1=(TextView)view.findViewById(R.id.textView1);
-        TextView textView2=(TextView)view.findViewById(R.id.textView2);
-        Button button=(Button)view.findViewById(R.id.button1);
+        TextView id=(TextView)view.findViewById(R.id.tv_num);
+        TextView user_id=(TextView)view.findViewById(R.id.tv_id);
+        TextView user_point=(TextView) view.findViewById(R.id.tv_point);
 
-        textView1.setText(data.get(i).getUserId());
-        textView2.setText(data.get(i).getUserPoint());
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),data.get(i).getUserId()+"님은 아직 프로필 준비중",Toast.LENGTH_SHORT).show();;
+        id.setText(String.valueOf(listViewList.get(i).getId()));
+        user_id.setText(listViewList.get(i).getUser_id());
+        user_point.setText(String.valueOf(listViewList.get(i).getUser_point())+"POINT");
 
-            }
-        });
         return view;
     }
-    public void addItem(String id,int point){
-        UserIdPoint item=new UserIdPoint();
-        item.setUserId(id);
-        item.setUserPoint(point);
-        data.add(item);
+
+    public void addItem(RankItem item){
+        item.setId(item.getId());
+        item.setUser_id(item.getUser_id());
+        item.setUser_point(item.getUser_point());
+        listViewList.add(item);
     }
+
 }

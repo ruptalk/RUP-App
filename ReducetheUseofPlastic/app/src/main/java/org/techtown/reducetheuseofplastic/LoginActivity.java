@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private EditText edt_id,edt_pw;
     private Button btn_login,btn_reg;
+    public String uid;
 
 
 
@@ -65,9 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             firebaseAuth=FirebaseAuth.getInstance();
                             FirebaseUser user=firebaseAuth.getCurrentUser();
-                            String uid=user.getUid();
+                            uid=user.getUid();
+                            System.out.print(uid);
                             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                            intent.putExtra("userUid",uid);
+                            //intent.putExtra("userUid",uid);
                             startActivity(intent);
 
                         }else{
