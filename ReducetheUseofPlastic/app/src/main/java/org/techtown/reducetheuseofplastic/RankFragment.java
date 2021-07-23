@@ -68,9 +68,10 @@ public class RankFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.rank, container, false);
         listView=(ListView)rootView.findViewById(R.id.listView_rank);
-
         adapter=new RankFragmentAdapter();
+        itemlist.clear();
         listView.setAdapter(adapter);
+
 
 
         for( i=0;i<10;i++){
@@ -79,11 +80,10 @@ public class RankFragment extends Fragment {
             item.setUser_id("박소영"+i);
             item.setUser_point(i+1);
             itemlist.add(item);
-            adapter.addItem(item);
-            //adapter.addItem(i,"박소영"+i,i+1);
+            //adapter.addItem(item);
         }
-        //adapter.addItem(itemlist);
-  
+
+
         //파이어 베이스에서 사용자들의 정보 모두 들고 와서 추가하기
         mDatabase=FirebaseDatabase.getInstance().getReference("Users2");
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -97,13 +97,37 @@ public class RankFragment extends Fragment {
                     item2.setUser_id(user.getName());
                     item2.setUser_point(Integer.parseInt(user.getPoint()));
                     itemlist.add(item2);
-                    adapter.addItem(item2);
+                    //adapter.addItem(item2);
                     //adapter.addItem(i,user.getName(),Integer.parseInt(user.getPoint()));
                     //adapter.notifyDataSetChanged();
                     System.out.println(i);
                     i++;
                 }
-                sortRank();
+
+                Comparator<RankItem> comparator=new Comparator<RankItem>() {
+                    @Override
+                    public int compare(RankItem item1, RankItem item2) {
+                        int ret=0;
+                        if(item1.getUser_point()<item2.getUser_point()){
+                            ret=1;
+                        }
+                        else if(item1.getUser_point()==item2.getUser_point()){
+                            ret=0;
+                        }
+                        else{
+                            ret=-1;
+                        }
+                        return ret;
+                    }
+                };
+                Collections.sort(itemlist,comparator);
+                for(int i=0;i<itemlist.size();i++){
+                    adapter.addItem2(itemlist.get(i),i);
+                }
+                //Collections.reverse(itemlist);
+                adapter.notifyDataSetChanged();
+
+
             }
 
             @Override
@@ -152,18 +176,19 @@ public class RankFragment extends Fragment {
             public int compare(RankItem item1, RankItem item2) {
                 int ret;
                 if(item1.getUser_point()<item2.getUser_point()){
-                    ret=-1;
+                    ret=1;
                 }
                 else if(item1.getUser_point()==item2.getUser_point()){
                     ret=0;
                 }
                 else{
-                    ret=1;
+                    ret=-1;
                 }
                 return ret;
             }
         };
         Collections.sort(itemlist,comparator);
+        //Collections.reverse(itemlist);
         adapter.notifyDataSetChanged();
 
     }

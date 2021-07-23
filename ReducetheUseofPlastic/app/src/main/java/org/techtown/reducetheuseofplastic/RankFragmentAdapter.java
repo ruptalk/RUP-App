@@ -65,5 +65,11 @@ public class RankFragmentAdapter extends BaseAdapter {
         item.setUser_point(item.getUser_point());
         listViewList.add(item);
     }
+    public void addItem2(RankItem item, int i){
+        item.setId(i+1);
+        item.setUser_id(item.getUser_id());
+        item.setUser_point(item.getUser_point());
+        listViewList.add(item);
+    }
 
 }
