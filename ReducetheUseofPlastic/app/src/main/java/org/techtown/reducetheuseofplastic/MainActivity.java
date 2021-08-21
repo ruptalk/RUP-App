@@ -26,12 +26,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class MainActivity extends AppCompatActivity {
-    private ImageButton btn_home, btn_rank, btn_alarm;
+    ImageButton btn_home, btn_rank, btn_alarm;
     public String email="null",name,pw,userEmail,uid;
     public int point,account;
-    public FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-    public DatabaseReference databaseReference;
+    FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference databaseReference;
     MainFragment fragment_main;
     RankFragment fragment_rank;
     AlarmFragment fragment_alarm;
@@ -46,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        TextView test=(TextView)findViewById(R.id.tv_email);
 
         uid=firebaseUser.getUid();
-        System.out.println(":)");
-        System.out.println(firebaseUser);
+
 
        databaseReference=FirebaseDatabase.getInstance().getReference();
        databaseReference.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
@@ -61,61 +60,69 @@ public class MainActivity extends AppCompatActivity {
                pw=userInfo.getPw();
                name=userInfo.getName();
                point=Integer.parseInt(userInfo.getPoint());
-               //account=Integer.parseInt(userInfo.getAccount());->default값 처리 해줘야 함
-               Log.d("firebase",String.valueOf(snapshot.getValue()));
-               Log.d("firebase",email);
-               test.setText(email+"님 환영합니다.");
+
+
+
+               //(1)
+               //여기로 옮긴 이유 :회원정보를 담은 변수들이 이 함수 밖을 나가면 다시 null값으로 변함.
+
+               fragment_main=new MainFragment();
+               fragment_rank=new RankFragment();
+               fragment_alarm=new AlarmFragment();
+
+               Bundle bundle=new Bundle();
+               bundle.putString("name",name);
+               bundle.putInt("point",point);
+               bundle.putString("uid",uid);
+               fragment_main.setArguments(bundle);
+
+               btn_home=(ImageButton)findViewById(R.id.btn_home);
+               btn_rank=(ImageButton)findViewById(R.id.btn_rank);
+               btn_alarm=(ImageButton)findViewById(R.id.btn_alarm);
+
+               databaseReference= FirebaseDatabase.getInstance().getReference();
+
+
+
+
+
+               btn_home.setOnClickListener(new View.OnClickListener(){
+                   @Override
+                   public void onClick(View v) {setFrag(0);}
+               });
+
+
+               btn_rank.setOnClickListener(new View.OnClickListener(){
+                   @Override
+                   public void onClick(View v) {
+                       setFrag(1);
+                   }
+               });
+
+               btn_alarm.setOnClickListener(new View.OnClickListener(){
+                   @Override
+                   public void onClick(View v) { setFrag(2); }
+               });
+
+               setFrag(0);//여기까지
+
+
 
            }
+
+
+
 
            @Override
            public void onCancelled(@NonNull DatabaseError error) {
 
            }
        });
-       System.out.println(email);
 
 
+       //(1)원래 여기에 코드 있었음
 
 
-
-        fragment_main=new MainFragment();
-        fragment_rank=new RankFragment();
-        fragment_alarm=new AlarmFragment();
-
-        btn_home=(ImageButton)findViewById(R.id.btn_home);
-        btn_rank=(ImageButton)findViewById(R.id.btn_rank);
-        btn_alarm=(ImageButton)findViewById(R.id.btn_alarm);
-
-        databaseReference= FirebaseDatabase.getInstance().getReference();
-
-        btn_home.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                setFrag(0);
-            }
-        });
-
-
-        btn_rank.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                setFrag(1);
-            }
-        });
-
-        btn_alarm.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) { setFrag(2); }
-        });
-
-
-
-        Bundle bundle=new Bundle();
-        bundle.putString("userEmail",userEmail);
-        fragment_main.setArguments(bundle);
-        fragment_rank.setArguments(bundle);
-        setFrag(0);
 
     }
     public void setFrag(int n){
