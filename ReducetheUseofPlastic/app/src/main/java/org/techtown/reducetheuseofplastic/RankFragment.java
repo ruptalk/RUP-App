@@ -97,9 +97,6 @@ public class RankFragment extends Fragment {
                     item2.setUser_id(user.getName());
                     item2.setUser_point(Integer.parseInt(user.getPoint()));
                     itemlist.add(item2);
-                    //adapter.addItem(item2);
-                    //adapter.addItem(i,user.getName(),Integer.parseInt(user.getPoint()));
-                    //adapter.notifyDataSetChanged();
                     System.out.println(i);
                     i++;
                 }
@@ -120,11 +117,14 @@ public class RankFragment extends Fragment {
                         return ret;
                     }
                 };
+                //아이템 리스트 순번대로 정렬
                 Collections.sort(itemlist,comparator);
+                //어댑터에 아이템 추가..이렇게 해야 하나?
                 for(int i=0;i<itemlist.size();i++){
                     adapter.addItem2(itemlist.get(i),i);
                 }
                 //Collections.reverse(itemlist);
+
                 adapter.notifyDataSetChanged();
 
 
@@ -170,27 +170,6 @@ public class RankFragment extends Fragment {
         mDatabase.addValueEventListener((ValueEventListener) childEventListener);
 
     }
-    public void sortRank(){
-        Comparator<RankItem> comparator=new Comparator<RankItem>() {
-            @Override
-            public int compare(RankItem item1, RankItem item2) {
-                int ret;
-                if(item1.getUser_point()<item2.getUser_point()){
-                    ret=1;
-                }
-                else if(item1.getUser_point()==item2.getUser_point()){
-                    ret=0;
-                }
-                else{
-                    ret=-1;
-                }
-                return ret;
-            }
-        };
-        Collections.sort(itemlist,comparator);
-        //Collections.reverse(itemlist);
-        adapter.notifyDataSetChanged();
 
-    }
 
 }
