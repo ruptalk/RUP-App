@@ -12,25 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".UserInformationActivity"></activity>
+        <activity android:name=".CurrencyExchange"/>
 
+        <activity android:name=".UserInformationActivity" />
 
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/styles" />
 
-        <activity android:name=".IntroActivity">
-
-        </activity>
+        <activity android:name=".IntroActivity"></activity>
         <activity android:name=".MyPageActivity" />
         <activity android:name=".RegisterActivity2" />
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MainActivity" />
     </application>
 

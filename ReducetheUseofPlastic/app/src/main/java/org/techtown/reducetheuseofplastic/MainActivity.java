@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public void setFrag(int n){
         switch (n){
             case 0:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_main).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_main).commitAllowingStateLoss();
                 break;
             case 1:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_rank).commit();
