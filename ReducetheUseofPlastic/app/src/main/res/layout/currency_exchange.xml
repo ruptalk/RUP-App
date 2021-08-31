@@ -44,7 +44,6 @@
         android:layout_height="200dp"
         android:background="@color/gray"
         android:textSize="20dp"
-        android:onClick="onTextViewClicked"
         android:clickable="true"/> <!-- 나중에 텍스트 창 하얀색으로바꾸기-->
 
 </LinearLayout>

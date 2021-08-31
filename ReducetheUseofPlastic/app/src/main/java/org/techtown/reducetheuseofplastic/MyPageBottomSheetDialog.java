@@ -105,6 +105,7 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                 Intent intent= new Intent(getActivity(),CurrencyExchange.class);
                 intent.putExtra("useruid",uid);
                 startActivity(intent);
+                dismiss();
                 break;
             case R.id.btn_notice:
                 Toast.makeText(getContext(),"공지사항",Toast.LENGTH_SHORT).show();

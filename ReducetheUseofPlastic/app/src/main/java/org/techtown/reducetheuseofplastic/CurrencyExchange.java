@@ -34,6 +34,11 @@ public class CurrencyExchange extends AppCompatActivity {
     DatabaseReference mdatabase= FirebaseDatabase.getInstance().getReference();
     private String uid,useremail,str_point,bank,str_account;
     private int point;
+    private String arr[]={"안녕하세요 환경포인트 환전소입니다.",
+            "일정 환경 포인트가 모일 수록 환불받을 수 있는 수수료가 낮아 집니다.",
+            "환전된 캐쉬를 받는데까지 대략 2~3일 시간이 소요가 됩니다.",
+            "자 얼만큼 환전 하실 것인가요?"};
+
 
 
 
@@ -69,6 +74,7 @@ public class CurrencyExchange extends AppCompatActivity {
 
 
 
+
         //상점버튼을 눌렀을 때
         imgbtn_market.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,16 +82,25 @@ public class CurrencyExchange extends AppCompatActivity {
                 onTextViewClicked();
             }
         });
+        tv_explain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count++;
+
+                if(count<=3) {
+                    tv_explain.setText(arr[count]);
+                }
+                else if(count==4){
+                    showDialog();
+                }
+            }
+        });
 
     }
     public void onTextViewClicked (){
         //해당 사이트 참고 : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=0677haha&logNo=60189825261
-        System.out.println(count);
         count++;
-        String arr[]={"안녕하세요 환경포인트 환전소입니다.",
-                        "일정 환경 포인트가 모일 수록 환불받을 수 있는 수수료가 낮아 집니다.",
-                        "환전된 캐쉬를 받는데까지 대략 2~3일 시간이 소요가 됩니다.",
-                        "자 얼만큼 환전 하실 것인가요?"};
+
         if(count<=3) {
             tv_explain.setText(arr[count]);
         }
