@@ -114,6 +114,17 @@ public class CurrencyExchange extends AppCompatActivity {
         Button btn_cup1=exchagedialog.findViewById(R.id.btn_cup1);
         Button btn_cup2=exchagedialog.findViewById(R.id.btn_cup2);
         Button btn_cup3=exchagedialog.findViewById(R.id.btn_cup3);
+        ImageButton cancel=exchagedialog.findViewById(R.id.Imgbtn_cancel);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tv_explain.setText("다음에 또 뵙겠습니다.");
+                count=-1;
+                exchagedialog.dismiss();
+            }
+        });
+
 
         mdatabase.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
