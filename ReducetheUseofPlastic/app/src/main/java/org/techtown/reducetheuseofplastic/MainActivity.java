@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //super.onBackPressed();
 
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setMessage("take-out컵을 쓰는 날 또 봐요 우리:)");
+        builder.setMessage("take-out컵을 쓰는 날 또 봐요:)");
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
