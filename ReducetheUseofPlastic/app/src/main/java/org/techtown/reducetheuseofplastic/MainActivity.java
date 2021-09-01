@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 //읽고 지우기기
             }
        });
-        builder.setNegativeButton("앗 잠시만요", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("앗 잠시만요!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 return;
