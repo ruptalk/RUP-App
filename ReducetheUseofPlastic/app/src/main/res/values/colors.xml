@@ -11,5 +11,7 @@
     <color name="green2">#32CD32</color>
     <color name="brown">#CD853F</color>
     <color name="sky">#E0FFFF</color>
+    <color name="gray">#B5B6B5</color>
+
 
 </resources>
