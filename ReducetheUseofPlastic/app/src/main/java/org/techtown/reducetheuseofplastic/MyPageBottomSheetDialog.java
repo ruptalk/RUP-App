@@ -101,8 +101,11 @@ public class MyPageBottomSheetDialog extends BottomSheetDialogFragment implement
                     }
                 }).setNegativeButton("취소",null).show();
                 break;
-            case R.id.btn_point_return:
-                Toast.makeText(getContext(),"포인트 반환하기",Toast.LENGTH_SHORT).show();
+            case R.id.btn_point_return://포인트 반환하기 페이지
+                Intent intent= new Intent(getActivity(),CurrencyExchange.class);
+                intent.putExtra("useruid",uid);
+                startActivity(intent);
+                dismiss();
                 break;
             case R.id.btn_notice:
                 Toast.makeText(getContext(),"공지사항",Toast.LENGTH_SHORT).show();

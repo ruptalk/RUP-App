@@ -49,9 +49,9 @@ public class MyPageActivity extends AppCompatActivity {
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 MyPageBottomSheetDialog myPageBottomSheetDialog=new MyPageBottomSheetDialog();
                 myPageBottomSheetDialog.show(getSupportFragmentManager(),"bottomSheet");
+
             }
         });
 
