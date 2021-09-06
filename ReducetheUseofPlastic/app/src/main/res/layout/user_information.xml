@@ -19,8 +19,8 @@
         android:textSize="25dp"
         android:textStyle="bold"/>
 
-    <ImageButton
-        android:id="@+id/img_modifiy_user"
+    <ImageView
+        android:id="@+id/imgbtn_userprofile"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_below="@id/tv"
@@ -32,7 +32,7 @@
         android:id="@+id/edit_modify_nickname"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_modifiy_user"
+        android:layout_below="@id/imgbtn_userprofile"
         android:layout_centerInParent="true"
         android:layout_marginTop="30dp"
         android:hint="닉네임"
