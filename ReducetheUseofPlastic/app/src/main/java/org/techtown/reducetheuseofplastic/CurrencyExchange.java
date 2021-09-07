@@ -105,7 +105,11 @@ public class CurrencyExchange extends AppCompatActivity {
             tv_explain.setText(arr[count]);
         }
         else if(count==4){
+            imgbtn_market.setEnabled(false);
+            tv_explain.setEnabled(false);
             showDialog();
+            imgbtn_market.setEnabled(true);
+            tv_explain.setEnabled(true);
         }
 
     }
@@ -141,8 +145,9 @@ public class CurrencyExchange extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserinfoExchage exchageinfo=snapshot.getValue(UserinfoExchage.class);
-                        requestpoint=exchageinfo.getPoint();//포인트 있는 지 확인하기
-
+                        if(exchageinfo!=null) {
+                            requestpoint = exchageinfo.getPoint();//포인트 있는 지 확인하기
+                        }
                         btn_cup1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -174,6 +179,7 @@ public class CurrencyExchange extends AppCompatActivity {
                                         }
                                     });
                                     dialog.show();
+
                                 }
                                 else{
                                     int temp=10-point;
