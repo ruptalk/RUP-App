@@ -33,7 +33,7 @@ public class CurrencyExchange extends AppCompatActivity {
     Dialog exchagedialog;
     DatabaseReference mdatabase= FirebaseDatabase.getInstance().getReference();
     private String uid,useremail,str_point,bank,str_account;
-    private int point;
+    private int point,requestpoint=0;
     private String arr[]={"안녕하세요 환경포인트 환전소입니다.",
             "일정 환경 포인트가 모일 수록 환불받을 수 있는 수수료가 낮아 집니다.",
             "환전된 캐쉬를 받는데까지 대략 2~3일 시간이 소요가 됩니다.",
@@ -136,7 +136,147 @@ public class CurrencyExchange extends AppCompatActivity {
                 bank=userInfo.getBank();
                 point=Integer.parseInt(str_point);
 
+                //사용자 요청한 금액이 있는지 확인 하기
+                mdatabase.child("exchange").child(uid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserinfoExchage exchageinfo=snapshot.getValue(UserinfoExchage.class);
+                        requestpoint=exchageinfo.getPoint();//포인트 있는 지 확인하기
 
+                        btn_cup1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(point>=10) {
+                                    AlertDialog.Builder dialog = new AlertDialog.Builder(CurrencyExchange.this);
+                                    dialog.setTitle("확실하죠!?");
+                                    dialog.setMessage("10개 교환을 선택하셨습니다 900원 교환이 가능합니다.맞습니까?");
+                                    dialog.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            exchagedialog.dismiss();
+                                            count = -1;
+                                            point=point-10;
+                                            requestpoint+=10;
+                                            str_point=Integer.toString(point);
+                                            tv_point.setText(str_point);
+                                            mdatabase.child("Users2").child(uid).child("point").setValue(str_point);
+                                            //반환신청 데이터 보내기
+                                            UserinfoExchage userinfoExchage=new UserinfoExchage(useremail,bank,requestpoint,Integer.parseInt(str_account),false);
+                                            mdatabase.child("exchange").child(uid).setValue(userinfoExchage);
+                                            tv_explain.setText("환전작업은 약 2~3일 소요됩니다. 감사합니다 또뵙겠습니다.");
+                                            Toast.makeText(CurrencyExchange.this, "정상적으로 접수 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Toast.makeText(CurrencyExchange.this, "다시 선택해주세요", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+                                else{
+                                    int temp=10-point;
+                                    Toast.makeText(getApplicationContext(),"포인트가"+temp+"개 부족합니다.",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        //컵 50개
+                        btn_cup2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(point>=50) {
+                                    AlertDialog.Builder dialog = new AlertDialog.Builder(CurrencyExchange.this);
+                                    dialog.setTitle("확실하죠!?");
+                                    dialog.setMessage("50개 교환을 선택하셨습니다 4,250원 교환이 가능합니다.맞습니까?");
+                                    dialog.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            exchagedialog.dismiss();
+                                            count = -1;
+                                            requestpoint+=50;
+                                            point=point-50;
+                                            str_point=Integer.toString(point);
+                                            tv_point.setText(str_point);
+                                            mdatabase.child("Users2").child(uid).child("point").setValue(str_point);
+                                            //반환신청 데이터 보내기
+                                            UserinfoExchage userinfoExchage=new UserinfoExchage();
+                                            userinfoExchage.account=Integer.parseInt(str_account);
+                                            userinfoExchage.bank=bank;
+                                            userinfoExchage.check=false;
+                                            userinfoExchage.point=requestpoint;
+                                            userinfoExchage.useremail=useremail;
+                                            mdatabase.child("exchange").child(uid).setValue(userinfoExchage);
+                                            tv_explain.setText("환전작업은 약 2~3일 소요됩니다. 감사합니다 또뵙겠습니다.");
+                                            Toast.makeText(CurrencyExchange.this, "정상적으로 접수 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Toast.makeText(CurrencyExchange.this, "다시 선택해주세요", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+                                else{
+                                    int temp=50-point;
+                                    Toast.makeText(getApplicationContext(),"포인트가"+temp+"개 부족합니다.",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        //컵 100개
+                        btn_cup3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(point>=100) {
+                                    AlertDialog.Builder dialog = new AlertDialog.Builder(CurrencyExchange.this);
+                                    dialog.setTitle("확실하죠!?");
+                                    dialog.setMessage("100개 교환을 선택하셨습니다 10,000원 교환이 가능합니다.맞습니까?");
+                                    dialog.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            exchagedialog.dismiss();
+                                            count = -1;
+                                            requestpoint+=100;
+                                            point=point-100;
+                                            str_point=Integer.toString(point);
+                                            tv_point.setText(str_point);
+                                            mdatabase.child("Users2").child(uid).child("point").setValue(str_point);
+                                            //반환신청 데이터 보내기
+                                            UserinfoExchage userinfoExchage=new UserinfoExchage(useremail,bank,requestpoint,Integer.parseInt(str_account),false);
+                                            mdatabase.child("exchange").child(uid).setValue(userinfoExchage);
+                                            tv_explain.setText("환전작업은 약 2~3일 소요됩니다. 감사합니다 또뵙겠습니다.");
+                                            Toast.makeText(CurrencyExchange.this, "정상적으로 접수 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Toast.makeText(CurrencyExchange.this, "다시 선택해주세요", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+                                else{
+                                    int temp=100-point;
+                                    Toast.makeText(getApplicationContext(),"포인트가"+temp+"개 부족합니다.",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+/*
                 btn_cup1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -256,7 +396,7 @@ public class CurrencyExchange extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"포인트가"+temp+"개 부족합니다.",Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
+                });*/
 
 
 
