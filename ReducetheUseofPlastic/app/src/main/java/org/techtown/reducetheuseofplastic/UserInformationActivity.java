@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -29,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,6 +87,7 @@ public class UserInformationActivity extends AppCompatActivity {
         bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_bank.setAdapter(bankAdapter);
 
+
         spinner_bank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -96,6 +99,25 @@ public class UserInformationActivity extends AppCompatActivity {
 
             }
         });
+
+        //사용자가 프로필 사진을 설정해놓은 경우(참고사이트 : https://art-coding3.tistory.com/38?category=917297)
+        StorageReference pathregerence=reference.child(uid);
+        if(pathregerence!=null){
+            StorageReference submitProfile=reference.child(uid+"/1.png");
+            submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    //Glide: 안드로이드에서 이미지를 효율적이고 빠르게 불러올 수 있도록 도움을 주는 라이브러리. 사용방법이 간단하고 확장성이 넓다.
+                    Glide.with(UserInformationActivity.this).load(uri).into(img_modify_user);
+                    img_modify_user.setScaleType(ImageView.ScaleType.FIT_XY);//만약에 이거를 할거면 뒤에 배경도 바꿔주는 명령어필요
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),"사용자이미지를 불러오지 못했습니다.",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
 
         if(user!=null){
@@ -223,11 +245,14 @@ public class UserInformationActivity extends AppCompatActivity {
                 else{
                     rootRef.child("Users2").child(uid).child("name").setValue(nname);
                     rootRef.child("Users2").child(uid).child("account").setValue(naccount);
-                    //사용자 프로필 저장 경로 설정(참고 사이트 : https://daldalhanstory.tistory.com/201)
+                    //사용자 프로필 저장 경로 설정(참고 사이트 : https://art-coding3.tistory.com/37)
                     if(photoUri!=null) {
                         String filename = "Userprofile.jpg";
-                        reference.child("Userprofile").child(uid);
-                        UploadTask uploadTask = reference.putFile(photoUri);
+                        StorageReference reference2 =reference.child(uid+"/1.png");
+                        reference.child("Userprofile");
+                        Uri file=Uri.fromFile(new File(String.valueOf(tempFile)));
+                        System.out.println(file);
+                        UploadTask uploadTask = reference2.putFile(file);
                         //새로운 프로필 이미지 storage에 저장
                         uploadTask.addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -288,7 +313,7 @@ public class UserInformationActivity extends AppCompatActivity {
                     System.out.println("여기에 이제 앨범나와야지");
 //                    Intent intent=new Intent();
 //                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//                    startActivity(intent);
+//                    startActivityForResult(intent,GALLERY_CODE);
                     goToAlbum();
                 }
                 else{
@@ -323,10 +348,12 @@ public class UserInformationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1){
             photoUri=data.getData();//선택한 이미지의 Uri를 받아옴
+            System.out.println("이미지Uri : ");
+            System.out.println(photoUri);
             Cursor cursor=null;
 
             try{
-                //Uri스키마를(Uri스키마가 뭔데?)cotent:///에서 file:///으로 변경한다.
+                //Uri스키마를(Uri스키마가 뭔데?->파일주소라는디)cotent:///에서 file:///으로 변경한다.
                 String[] proj={MediaStore.Images.Media.DATA};
                 assert photoUri!=null;//assert 가 뭔디?
                 cursor=getContentResolver().query(photoUri,proj,null,null,null);
@@ -335,6 +362,8 @@ public class UserInformationActivity extends AppCompatActivity {
                 cursor.moveToFirst();
 
                 tempFile=new File(cursor.getString(column_index));
+                System.out.println("변경된 이미지Uri : ");
+                System.out.println(tempFile);
             }finally {
                 //finally는 뭐야?
                 if(cursor!=null){

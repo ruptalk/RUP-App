@@ -4,6 +4,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,9 +22,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +38,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainFragment extends Fragment {
 
@@ -41,8 +53,11 @@ public class MainFragment extends Fragment {
     private ImageButton btn_point_alarm, btn_mypage;
     DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
     LottieAnimationView animationView;
+    private GradientDrawable drawable;
+    private FirebaseStorage storage=FirebaseStorage.getInstance();
+    private StorageReference reference=storage.getReference();
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -77,6 +92,7 @@ public class MainFragment extends Fragment {
 
         context=container.getContext();
 
+
         Bundle bundle=getArguments();
 
         if(bundle!=null) {
@@ -88,7 +104,25 @@ public class MainFragment extends Fragment {
             String username_str=username+"님의 환경포인트";
             tv_cuppoint.setText(cuppoint_str);
             tv_username.setText(username_str);
-            System.out.println("----------------" + bundle);
+
+            //사용자 프로필 사진이 설정되어 있을 경우 설정해주기
+            StorageReference path=reference.child(uid);
+            if(path!=null){
+                StorageReference setreference=path.child("/1.png");
+                setreference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        //Glide라이브러리에서 제공해주는 이미지 라운딩 처리(참고사이트 : https://gwi02379.tistory.com/10)
+                        Glide.with(MainFragment.this).load(uri).apply(RequestOptions.bitmapTransform(new RoundedCorners(200))).into(btn_mypage);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(),"사용자이미지 업로드를 실패했습니다.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
         }
         else{
