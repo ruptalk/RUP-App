@@ -16,7 +16,7 @@ public class AlarmItem {
         return date;
     }
 
-    public void setDate(String date){
-        this.date=date;
+    public void setDate(String month, String day){
+        this.date=""+month+"월 "+day+"일";
     }
 }

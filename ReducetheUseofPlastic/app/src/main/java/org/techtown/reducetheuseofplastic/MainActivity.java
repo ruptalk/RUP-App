@@ -34,13 +34,14 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
     ImageButton btn_home, btn_rank, btn_alarm;
     public String email="null",name,pw,userEmail,uid;
-    public int point,account;
+    public int point, account;
     FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference databaseReference;
     MainFragment fragment_main;
     RankFragment fragment_rank;
     AlarmFragment fragment_alarm;
 
+    private String TAG="MainActivity";
     private long lastTimeBackPressed;
     Object value;
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                pw=userInfo.getPw();
                name=userInfo.getName();
                point=Integer.parseInt(userInfo.getPoint());
-
+               Log.d(TAG,"point: "+point);
 
 
                //(1)
@@ -156,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
 
        //(1)원래 여기에 코드 있었음
+
+
 
 
 

@@ -1,14 +1,18 @@
 package org.techtown.reducetheuseofplastic;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AlarmAdapter extends BaseAdapter {
+    private String TAG="AlarmAdapter";
     ArrayList<AlarmItem> alarmItems=new ArrayList<AlarmItem>();
 
     @Override
@@ -48,10 +52,12 @@ public class AlarmAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem_alarm(String content, String date){
+    public void addItem_alarm(String content, String year, String month, String day){
+        Log.d(TAG,"들어가나?");
         AlarmItem alarmItem=new AlarmItem();
         alarmItem.setContent(content);
-        alarmItem.setDate(date);
-        alarmItems.add(alarmItem);
+        //alarmItem.setDate(month, day);
+        //alarmItems.add(alarmItem);
+        //Log.d(TAG,""+alarmItems);
     }
 }
