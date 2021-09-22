@@ -36,10 +36,12 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-public class MyPageActivity extends AppCompatActivity {
+import java.util.WeakHashMap;
 
+public class MyPageActivity extends AppCompatActivity {
+    WeakHashMap<String,String> a;
     private ImageView img_qr,img_user;
-    private String uid, username , userEmail;
+    private String uid, username,userEmail;
     private String point;
     private TextView tv_id, tv_lv, tv_point;
     private Button btn_setting, btn_back;
@@ -106,7 +108,7 @@ public class MyPageActivity extends AppCompatActivity {
         //qr코드
         MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
         try{
-            BitMatrix bitMatrix=multiFormatWriter.encode(userEmail, BarcodeFormat.QR_CODE,200,200);
+            BitMatrix bitMatrix=multiFormatWriter.encode(uid,BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder=new BarcodeEncoder();
             Bitmap bitmap=barcodeEncoder.createBitmap(bitMatrix);
             img_qr.setImageBitmap(bitmap);

@@ -34,8 +34,6 @@ import java.util.List;
 public class RankFragment extends Fragment {
     
     MainActivity mainActivity;
-    static final String[] ListMenu={"박소영","park so young","하우"};
-
     private DatabaseReference mDatabase;
     private ChildEventListener childEventListener;
 
@@ -43,11 +41,7 @@ public class RankFragment extends Fragment {
     private ArrayList<RankItem> itemlist = new ArrayList<RankItem>();;
     private RankFragmentAdapter adapter;
 
-
     public int i=0;
-
-
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,8 +66,6 @@ public class RankFragment extends Fragment {
         itemlist.clear();
         listView.setAdapter(adapter);
 
-
-
         for( i=0;i<10;i++){
             RankItem item=new RankItem();
             item.setId(i);
@@ -83,21 +75,17 @@ public class RankFragment extends Fragment {
             //adapter.addItem(item);
         }
 
-
-        //파이어 베이스에서 사용자들의 정보 모두 들고 와서 추가하기
         mDatabase=FirebaseDatabase.getInstance().getReference("Users2");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data:snapshot.getChildren()){
                     UserInfo user=data.getValue(UserInfo.class);
-                    //System.out.println(userinfo);
                     RankItem item2=new RankItem();
                     item2.setId(i);
                     item2.setUser_id(user.getName());
                     item2.setUser_point(Integer.parseInt(user.getPoint()));
                     itemlist.add(item2);
-                    System.out.println(i);
                     i++;
                 }
 
@@ -120,9 +108,10 @@ public class RankFragment extends Fragment {
                 //아이템 리스트 순번대로 정렬
                 Collections.sort(itemlist,comparator);
                 //어댑터에 아이템 추가..이렇게 해야 하나?
-                for(int i=0;i<itemlist.size();i++){
+                /*for(int i=0;i<itemlist.size();i++){
                     adapter.addItem2(itemlist.get(i),i);
-                }
+                }*/
+                adapter.addItem3(itemlist);
                 //Collections.reverse(itemlist);
 
                 adapter.notifyDataSetChanged();
