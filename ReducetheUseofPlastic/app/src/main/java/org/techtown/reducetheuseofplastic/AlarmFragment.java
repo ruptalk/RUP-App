@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,19 +24,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class AlarmFragment extends Fragment {
-
-    private ListView listview;
-    private AlarmAdapter alarmAdapter;
-
-    private String uid, TAG="AlarmFragment";
+    String month, day, uid, TAG="AlarmFragment";
     public int point, changed_point;
-    FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+    public Date currentTime;
+    public SimpleDateFormat dayFormat, monthFormat;
+
+    Context context;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView recyclerView=null;
+    AlarmAdapter adapter=null;
+    ArrayList<AlarmItem> arrayList=new ArrayList<>();
+
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference databaseReference;
 
     public AlarmFragment(){ }
@@ -52,20 +61,19 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDataset();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.alarm, container,false);
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.alarm, container,false);
+        context=view.getContext();
 
-        listview=(ListView)view.findViewById(R.id.listview_alarm);
-        alarmAdapter=new AlarmAdapter();
-
-        uid=firebaseUser.getUid();
 
         //addValueEventListener : 실시간으로 데이터베이스의 값 변화 감지해서
         // 변화가 있다면 onDataChange를 호출해주므로 전역변수 값도 그때그때 바뀜.
+        uid=user.getUid();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,19 +82,20 @@ public class AlarmFragment extends Fragment {
                 changed_point=Integer.parseInt(userInfo.getPoint());
                 Log.d(TAG,"point!!!!: "+changed_point);
 
-                Date currentTime= Calendar.getInstance().getTime();
-                SimpleDateFormat dayFormat=new SimpleDateFormat("dd", Locale.getDefault());
-                SimpleDateFormat monthFormat=new SimpleDateFormat("MM",Locale.getDefault());
-                SimpleDateFormat yearFormat=new SimpleDateFormat("yyyy",Locale.getDefault());
 
-                String year=yearFormat.format(currentTime);
-                String month=monthFormat.format(currentTime);
-                String day=monthFormat.format(currentTime);
-                Log.d(TAG,year+" "+month+" "+day);
+                    currentTime = Calendar.getInstance().getTime();
+                    dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+                    monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
 
-                alarmAdapter.addItem_alarm("10point 적립되었습니다.", year, month, day);
+                    month = monthFormat.format(currentTime);
+                    day = dayFormat.format(currentTime);
+                    Log.d(TAG, month + " " + day);
 
-            }
+                    arrayList.add(new AlarmItem("1point가 적립되었습니다.",month, day));
+                    adapter=new AlarmAdapter(context, arrayList);
+                    recyclerView.setAdapter(adapter);
+                }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -94,8 +103,53 @@ public class AlarmFragment extends Fragment {
         });
 
 
-
-        listview.setAdapter(alarmAdapter);
         return view;
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //adapter=new AlarmAdapter(context, arrayList);
+
+        recyclerView=(RecyclerView)view.findViewById(R.id.recyceler_view);
+        layoutManager=new LinearLayoutManager(getActivity());
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter=new AlarmAdapter(context, arrayList);
+        recyclerView.setAdapter(adapter);
+
+    }
+    private void initDataset() {
+        //ArrayList<AlarmItem> mSearchData = new ArrayList<>();
+
+        for(int i=0; i<100; i++){
+            currentTime= Calendar.getInstance().getTime();
+            dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+            monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+
+            month = monthFormat.format(currentTime);
+            day = dayFormat.format(currentTime);
+
+            arrayList.add(new AlarmItem(i+"point가 적립되었습니다.",month, day));
+
+
+        }
+
+    }
+/*
+    public void addAlarmItem(String content, String month, String day){
+        AlarmItem item=new AlarmItem(content, month, day);
+
+        item.setContent(content);
+        item.setMonth(month);
+        item.setDay(day);
+
+        arrayList.add(item);
+    }
+
+ */
 }

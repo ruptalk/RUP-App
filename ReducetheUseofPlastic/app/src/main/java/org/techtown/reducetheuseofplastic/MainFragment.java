@@ -29,9 +29,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainFragment extends Fragment {
 
-    String username,uid;
+    String username,uid,TAG="MainFragment";
     MainActivity mainActivity;
     Context context;
     float MyCupPoint= 0.0f;
@@ -41,6 +47,13 @@ public class MainFragment extends Fragment {
     private ImageButton btn_point_alarm, btn_mypage;
     DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
     LottieAnimationView animationView;
+
+
+    String month, day;
+    public int changed_point;
+    public Date currentTime;
+    public SimpleDateFormat dayFormat, monthFormat;
+    ArrayList<AlarmItem> arrayList=new ArrayList<>();
 
 
     @Override
@@ -102,29 +115,6 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
-/*
-        btn_point_alarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("toast","1");
-                LayoutInflater layoutInflater=getLayoutInflater();
-                View view_l=inflater.inflate(R.layout.point_save, (ViewGroup)getView().findViewById(R.id.toast_layout));
-                Log.d("toast","2");
-                TextView tv_toast_point=view_l.findViewById(R.id.tv_toast_point);
-                Toast toast=new Toast(context);
-                Log.d("toast","3");
-                tv_toast_point.setText("??점이 적립되었습니다.");
-                tv_toast_point.setTextSize(15);
-                tv_toast_point.setTextColor(Color.BLACK);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
-                toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.setView(view_l);
-                toast.show();
-            }
-        });
-
- */
 
         animationView=(LottieAnimationView) rootView.findViewById(R.id.like_btn);
 
@@ -188,7 +178,31 @@ public class MainFragment extends Fragment {
             }
         });
 
+        databaseReference.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserInfo userInfo=snapshot.getValue(UserInfo.class);
+                changed_point=Integer.parseInt(userInfo.getPoint());
+                Log.d(TAG,"point!!!!: "+changed_point);
 
+
+                currentTime = Calendar.getInstance().getTime();
+                dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+                monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+
+                month = monthFormat.format(currentTime);
+                day = dayFormat.format(currentTime);
+                Log.d(TAG, month + " " + day);
+
+                arrayList.add(new AlarmItem("1point가 적립되었습니다.",month, day));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
