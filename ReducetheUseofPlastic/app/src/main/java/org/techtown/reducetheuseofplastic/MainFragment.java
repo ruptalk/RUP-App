@@ -180,6 +180,7 @@ public class MainFragment extends Fragment {
                 databaseReference.child("Users2").child(uid).child("point").setValue(cuppoint_str);
             }
         });
+        
 
         databaseReference.child("Users2").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
