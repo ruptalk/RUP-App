@@ -46,6 +46,7 @@ public class MainFragment extends Fragment {
     public int cuppoint=0;
     private ImageButton btn_point_alarm, btn_mypage;
     DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+    FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
     LottieAnimationView animationView;
 
 
@@ -107,6 +108,8 @@ public class MainFragment extends Fragment {
         else{
             System.out.println("번들값 없다.");
         }
+
+        uid=firebaseUser.getUid();
 
         btn_mypage.setOnClickListener(new View.OnClickListener() {
             @Override
